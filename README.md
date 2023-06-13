@@ -1,2 +1,9 @@
 # FP_MBD
-FP MBD
+
+#### CDM
+
+![cdm](./img/CDM.png)
+
+#### PDM
+
+![pdm](./img/PDM.png)
