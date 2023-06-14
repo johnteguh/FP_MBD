@@ -20,7 +20,7 @@ REFERENCES Brand(IDBrand);
 CREATE TABLE Customer(
     IDCust CHAR(5) PRIMARY KEY NOT NULL,
     NoTelp VARCHAR(15) NULL,
-    IDMember CHAR(5) NULL
+    IDMember CHAR(5) NULL,
     CONSTRAINT fk_idmember
     FOREIGN KEY(IDMember)
     REFERENCES Member(IDMember)
