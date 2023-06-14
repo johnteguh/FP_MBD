@@ -46,10 +46,6 @@ CREATE TABLE Staff(
     
 );
 
-DROP TABLE Staff;
-DROP TABLE Transaksi;
-DROP TABLE DetailTransaksi;
-
 CREATE TABLE Transaksi(
     IDTransaksi CHAR(5) PRIMARY KEY NOT NULL,
 	Customer_IDCust CHAR(5) NOT NULL,
