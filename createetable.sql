@@ -20,19 +20,20 @@ REFERENCES Brand(IDBrand);
 CREATE TABLE Customer(
     IDCust CHAR(5) PRIMARY KEY NOT NULL,
     NoTelp VARCHAR(15) NULL,
-    CONSTRAINT fk_member
-    FOREIGN KEY(Notelp)
-    REFERENCES Member(NoTelp)
+    IDMember CHAR(5) NULL
+    CONSTRAINT fk_idmember
+    FOREIGN KEY(IDMember)
+    REFERENCES Member(IDMember)
 );
 
 CREATE TABLE Member(
-    IDMember CHAR(5) NOT NULL,
-    Nama VARCHAR(75) NOT NULL,
-    TanggalLahir DATE NOT NULL,
-    Email VARCHAR(30) NOT NULL,
-    NoTelp VARCHAR(15) PRIMARY KEY NOT NULL,
-    Alamat VARCHAR(100) NOT NULL,
-    Poin INTEGER NOT NULL
+    IDMember CHAR(5) PRIMARY KEY NOT NULL,
+    Nama VARCHAR(75) NULL,
+    TanggalLahir DATE NULL,
+    Email VARCHAR(30) NULL,
+    NoTelp VARCHAR(15) NOT NULL,
+    Alamat VARCHAR(100) NULL,
+    Poin INTEGER NULL
 );
 
 
