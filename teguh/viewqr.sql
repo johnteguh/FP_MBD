@@ -1,10 +1,9 @@
 -- View untuk menampilkan banyak produk yang dibeli setiap transaksi
-
 CREATE VIEW Total_Pertransaksi AS
-SELECT tr.idtransaksi, COUNT(td.transaksi_IDTransaksi) AS jumlah_produk
-FROM DetailTransaksi td, Transaksi tr
-WHERE td.transaksi_IDTransaksi = tr.idtransaksi
-GROUP BY tr.idtransaksi
-ORDER BY tr.idtransaksi ASC;
+SELECT t.IDTransaksi, COUNT(dt.IDDetailTransaksi) AS "Jumlah Produk", SUM(dt.Jumlah) AS "Jumlah Total"
+FROM Transaksi t
+INNER JOIN DetailTransaksi dt ON t.IDTransaksi = dt.Transaksi_IDTransaksi
+GROUP BY t.IDTransaksi
+ORDER BY t.IDTransaksi ASC;
 
-SELECT * FROM Total_Pertransaksi;
+SELECT * FROM total_pertransaksi;
