@@ -1,3 +1,5 @@
+
+--Function untuk mendapatkan member dan nama member yang berulang tahun dibulan yang diinputkan
 CREATE OR REPLACE FUNCTION get_members_by_birthmonth(input_month INTEGER)
 RETURNS TABLE (Member_IDMember CHAR(5), Nama_Member VARCHAR(50), TanggalLahir_Member DATE) AS $$
 BEGIN
@@ -10,7 +12,7 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM get_members_by_birthmonth(6);
 
---
+--Function mendapatkan barang yang memiliki harga dibawah yang diinputkan
 CREATE OR REPLACE FUNCTION get_products_by_price(input_price NUMERIC)
 RETURNS TABLE (IDProduk CHAR(5), Nama VARCHAR(150), Stok INTEGER, Harga NUMERIC(8,2)) AS $$
 BEGIN
@@ -23,7 +25,7 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM get_products_by_price(500000.00);
 
---
+--Function mendapatkan barang memiliki harga dibawah yang diinputkan dan stok di bawah yang diinputkan
 CREATE OR REPLACE FUNCTION get_products_by_pricestok(input_price NUMERIC, input_stok INTEGER)
 RETURNS TABLE (ID_Produk CHAR(5), Nama_Produk VARCHAR(150), Stok_Produk INTEGER, Harga_Produk NUMERIC(8,2)) AS $$
 BEGIN

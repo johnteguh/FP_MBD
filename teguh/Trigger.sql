@@ -17,7 +17,39 @@ AFTER INSERT ON Customer
 FOR EACH ROW
 EXECUTE FUNCTION check_and_insert_idmember();
 
+--Trigger untuk mencatat bila terjadi update stok pada produk dengan mencatat penambahan atau pengurangan barangnya
 
+CREATE TABLE log_produk
+(
+    logid SERIAL PRIMARY KEY,
+    activity VARCHAR(100),
+    idProduk CHAR(5),
+    jumlah integer,
+    starttime TIMESTAMP DEFAULT NOW()
+);
+
+CREATE OR REPLACE FUNCTION log_produk_changes()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.stok > OLD.stok THEN
+        INSERT INTO log_produk(activity, idproduk,jumlah)
+        VALUES ('Menambah Stok', NEW.idproduk,NEW.stok - OLD.stok);
+    ELSIF NEW.stok < OLD.stok THEN
+        INSERT INTO log_produk(activity, idproduk,jumlah)
+        VALUES ('Mengurangi Stok', NEW.idproduk,OLD.stok - NEW.stok);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER produk_stok_trigger
+AFTER UPDATE OF stok ON produk
+FOR EACH ROW
+EXECUTE FUNCTION log_produk_changes();
+
+
+
+--error / salah
 -- Trigger untuk melakukan diskon 10% apabila tanggal transaksi sama dengan tanggal lahirnya
 CREATE OR REPLACE FUNCTION apply_discount()
 RETURNS TRIGGER AS $$
@@ -57,37 +89,6 @@ FOR EACH ROW
 EXECUTE FUNCTION apply_discount();
 
 
-
-
---3
-
-CREATE TABLE log_produk
-(
-    logid SERIAL PRIMARY KEY,
-    activity VARCHAR(100),
-    idProduk CHAR(5),
-    jumlah integer,
-    starttime TIMESTAMP DEFAULT NOW()
-);
-
-CREATE OR REPLACE FUNCTION log_produk_changes()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.stok > OLD.stok THEN
-        INSERT INTO log_produk(activity, idproduk,jumlah)
-        VALUES ('Menambah Stok', NEW.idproduk,NEW.stok - OLD.stok);
-    ELSIF NEW.stok < OLD.stok THEN
-        INSERT INTO log_produk(activity, idproduk,jumlah)
-        VALUES ('Mengurangi Stok', NEW.idproduk,OLD.stok - NEW.stok);
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER produk_stok_trigger
-AFTER UPDATE OF stok ON produk
-FOR EACH ROW
-EXECUTE FUNCTION log_produk_changes();
 
 
 
