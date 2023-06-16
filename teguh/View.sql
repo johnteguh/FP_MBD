@@ -7,3 +7,12 @@ GROUP BY t.IDTransaksi
 ORDER BY t.IDTransaksi ASC;
 
 SELECT * FROM total_pertransaksi;
+
+
+-- View untuk menampilkan produk yang memiliki harga diatas rata-rata
+CREATE VIEW PRODUK_MAHAL AS
+SELECT IDProduk, NAMA, HARGA
+FROM PRODUK
+WHERE HARGA > (SELECT AVG(HARGA) FROM PRODUK);
+
+SELECT * FROM PRODUK_MAHAL;
