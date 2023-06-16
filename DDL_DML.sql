@@ -17,41 +17,42 @@ ADD CONSTRAINT IDBrand_Produk
 FOREIGN KEY(Brand_IDBrand)
 REFERENCES Brand(IDBrand);
 
+CREATE TABLE Member(
+    IDMember CHAR(5) NOT NULL PRIMARY KEY,
+    Nama VARCHAR(75),
+    TanggalLahir DATE,
+    Email VARCHAR(30),
+    NoTelp VARCHAR(15),
+    Alamat VARCHAR(100),
+    Poin INTEGER
+);
+
 CREATE TABLE Customer(
     IDCust CHAR(5) PRIMARY KEY NOT NULL,
-    NoTelp VARCHAR(15) NULL,
-    IDMember CHAR(5) NULL,
-    CONSTRAINT fk_idmember
-    FOREIGN KEY(IDMember)
-    REFERENCES Member(IDMember)
-);
-
-CREATE TABLE Member(
-    IDMember CHAR(5) PRIMARY KEY NOT NULL,
-    Nama VARCHAR(75) NULL,
-    TanggalLahir DATE NULL,
-    Email VARCHAR(30) NULL,
     NoTelp VARCHAR(15) NOT NULL,
-    Alamat VARCHAR(100) NULL,
-    Poin INTEGER NULL
+    Member_IDMember CHAR(5)
 );
 
+ALTER TABLE Customer
+ADD CONSTRAINT Customer_IDMember
+FOREIGN KEY(Member_IDMember)
+REFERENCES Member(IDMember);
 
 CREATE TABLE Staff(
     IDStaff CHAR(5) PRIMARY KEY NOT NULL,
     Nama VARCHAR(75) NOT NULL,
-    TanggalLahir DATE NOT NULL,
+	TanggalLahir DATE NOT NULL,
     Email VARCHAR(30) NOT NULL,
     NoTelp VARCHAR(15) NOT NULL,
-    
+    Alamat VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Transaksi(
     IDTransaksi CHAR(5) PRIMARY KEY NOT NULL,
 	Customer_IDCust CHAR(5) NOT NULL,
 	Staff_IDStaff CHAR(5) NOT NULL,
-    Tanggal TIMESTAMP DEFAULT NOW() NOT NULL,
-    TotalHarga NUMERIC(10,2) NOT NULL
+    Tanggal TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    TotalHarga NUMERIC(10,2)
 );
 
 ALTER TABLE Transaksi
@@ -67,9 +68,9 @@ REFERENCES Staff(IDStaff);
 CREATE TABLE DetailTransaksi(
     IDDetailTransaksi CHAR(5) PRIMARY KEY NOT NULL,
 	Transaksi_IDTransaksi CHAR(5) NOT NULL,
-	Produk_IDProduk CHAR(5) NOT NULL,
-    Jumlah INTEGER NOT NULL,
-    TotalHarga NUMERIC(10,2) NOT NULL
+	Produk_IDProduk CHAR(5),
+    Jumlah INTEGER,
+    TotalHarga NUMERIC(10,2)
 );
 
 ALTER TABLE DetailTransaksi
@@ -82,6 +83,16 @@ ADD CONSTRAINT IDProduk_DetailTransaksi
 FOREIGN KEY(Produk_IDProduk)
 REFERENCES Produk(IDProduk);
 
+--Display Tabel
+SELECT * FROM Brand;
+SELECT * FROM Produk;
+SELECT * FROM Member;
+SELECT * FROM Customer;
+SELECT * FROM Staff;
+SELECT * FROM Transaksi;
+SELECT * FROM DetailTransaksi;
+
+--Insert Data pada Tabel Brand, Produk, Customer, dan Staff
 INSERT INTO Brand VALUES
 	('B0001', 'SOMETHINC'),
     ('B0002', 'AVOSKIN'),
@@ -98,7 +109,7 @@ INSERT INTO Brand VALUES
     ('B0013', 'SKIN DEWI'),
     ('B0014', 'GRACE AND GLOW'),
     ('B0015', 'THE BATH BOX');
-
+	
 INSERT INTO Produk VALUES
     ('P0001', 'B0001', '5% Niacinamide + Moisture Sabi Beet Serum', '2025-03-24', 89000.00, 52),
     ('P0002', 'B0001', 'Low pH Gentle Jelly Cleanser', '2024-12-29', 99000.00, 38),
@@ -173,54 +184,84 @@ INSERT INTO Produk VALUES
     ('P0071', 'B0015', 'The Bath Box Salted Honey Facial Cleanser', '2025-07-14', 179000.00, 21),
     ('P0072', 'B0015', 'The Bath Box Ocha Liquid Soap', '2026-05-22', 129000.00, 32),
     ('P0073', 'B0015', 'The Bath Box Veggie Pro Nourishing Shampoo', '2024-03-26', 185000.00, 13);
-	
 
-INSERT INTO customer VALUES
-    ('C0001', 'Maida Sudiati', 'maidasudiati@gmail.com', '082167739725', 'Jl. Suryo Pranoto 2 Bl B/40, DKI Jakarta', 0),
-    ('C0002', 'Dewi Mandasari', 'dewim123@gmail.com', '087787145112', 'Jl. Ploso Bogen 36 A, Jawa Timur', 0),
-    ('C0003', 'Kani Novitasari', 'kaninov@gmail.com', '083137497380', 'Jl. Bendungan Hilir Raya 33 A, DKI Jakarta', 0),
-    ('C0004', 'Hani Yuniar', 'haniyuni@gmail.com', '087769138879', 'Jl. Kemang Utr IX 8, DKI Jakarta', 0),
-    ('C0005', 'Banara Utama', 'banara.utama@gmail.com', '085747023860', 'Jl. Banceuy 22, Jawa Barat', 0),
-    ('C0006', 'Jasmin Oktaviani', 'jasminokt@gmail.com', '085782814504', 'Jalan Permata Sari, Melawai 210, DKI Jakarta', 0),
-    ('C0007', 'Artawan Waluyo', 'artawannn@gmail.com', '085747546770', 'Jl. Raden Saleh Raya 4 Dinar Bldg, DKI Jakarta', 0),
-    ('C0008', 'Ani Rahayu', 'anirahayu@gmail.com', '085794709511', 'Jl. Kebahagiaan 23, DKI Jakarta', 0),
-    ('C0009', 'Mala Lailasari', 'mala765@gmail.com', '081203196023', 'Jl. Cideng Brt 62 B, DKI Jakarta', 0),
-    ('C0010', 'Hasna Widiastuti', 'hasnaaw@gmail.com', '081218075334', 'Jl. Trunojoyo 3, DKI Jakarta', 0),
-    ('C0011', 'Ajeng Nuraini', 'ajengnur@gmail.com', '081278109810', 'Jl. Mesjid Raya 18 RT 001/07 Peninggilan Larangan Slt Tangera, DKI Jakarta', 0),
-    ('C0012', 'Heru Latupono', 'heru.latupono@gmail.com', '082136808257', 'Jl. Mangga Dua Raya Bl N/21, DKI Jakarta', 0),
-    ('C0013', 'Shakila Wijayanti', 'shakilawijaya@gmail.com', '082132132499', 'Jl. Mangga Dua Raya Psr Pagi Mangga Dua Bl A/188, DKI Jakarta', 0),
-    ('C0014', 'Nrima Ramadan', 'ramadani@gmail.com', '083134766561', 'Jl. Raya Pintu I TMII Kav 7, Jakarta', 0),
-    ('C0015', 'Laswi Uwais', 'laswiuwaw@gmail.com', '083109451594', 'Jl. Lingkar Slt 5, Jawa Barat', 0),
-    ('C0016', 'Juli Hasanah', 'julihasanah@gmail.com', '082149830047', 'Jl. Hayam Wuruk V Glodok Baru Harco Bl D II/1, Dki Jakarta', 0),
-    ('C0017', 'Icha Hasanah', 'ichaicha@gmail.com', '082112160390', 'Jl. Alur Laut I 43 RT 004/03 Perum Pelabuhan, DKI Jakarta', 0),
-    ('C0018', 'Ulva Hariyah', 'ulvavv123@gmail.com', '088719400406', 'Jl. Tmn Nyiur Bl N/3 B, DKI Jakarta', 0),
-    ('C0019', 'Prayitna Firgantoro', 'pritaaafir@gmail.com', '088732311162', 'Jl. Raya Bekasi Km 26/99, DKI Jakarta', 0),
-    ('C0020', 'Atmaja Lazuardi', 'majardi@gmail.com', '083199652492', 'Psr Tanah Abang Bl C Los BKS/2, DKI Jakarta', 0),
-    ('C0021', 'Hardianti Dewi', 'dewihadrianti@gmail.com', '082184881754', 'Jl. KH Agus Salim 16, Menteng, DKI Jakarta', 0),
-    ('C0022', 'Assalia Agustina', 'assaliaagustina@gmail.com', '081271838985', 'Jl. Cempaka Raya III No 6 DKI Jakarta', 0),
-    ('C0023', 'Muning Amsamsyum', 'muningsyum@gmail.com', '089689525963', 'Jl. Letjen Suprapto, Jakarta Pusat, DKI Jakarta', 0),
-    ('C0024', 'Defara Febrianto', 'defara.febrianto@gmail.com', '089696081921', 'Jl. Setiabudi Tengah No. 3, DKI Jakarta', 0),
-    ('C0025', 'Deyuri Melfriza', 'deyurimelfriza08@gmail.com', '089681429435', 'Jl. Percetakan Negara D 639, DKI Jakarta', 0),
-    ('C0026', 'Fauzia Mustikawati', 'fauziamustikawati@gmail.com', '081227019736', 'Duta Merlin, Blok B / 37, Gambir, DKI Jakarta', 0),
-    ('C0027', 'Tifany Zakia', 'zakia03@gmail.com', '085730850479', 'Jl. Gunung Sahari 11 Kecil No. 22, DKI Jakarta', 0),
-    ('C0028', 'Dwi Hapsari', 'taman.hapsari@gmail.com', '085765452642', 'Jl.Tebet Barat Dalam II.F, Tebet, DKI Jakarta', 0),
-    ('C0029', 'Amanda Sunanto', 'amandasusanto@gmail.com', '081228161962', 'Jl. Martapura III No. 4, Tanah Abang, DKI Jakarta', 0),
-    ('C0030', 'Dessita Ramadhan', 'dessita666@gmail.com', '081246614367', 'Jl. Gading Elok, Kelapa Gading, DKI Jakarta', 0),
-    ('C0031', 'Ajeng Setyawati', 'ajengwati@gmail.com', '087883191543', 'Jl. Bonang No. 19. RT 2/RW 5, DKI Jakarta', 0),
-    ('C0032', 'Hilyah Nugraha', 'nugrahaiyah@gmail.com', '087834096159', 'Jl. Gunung Sahari XI No. 24, DKI Jakarta', 0),
-    ('C0033', 'Almira Satria', 'almirasat@gmail.com', '082108997386', 'Jl. Mangga Besar 13 No 22, DKI Jakarta', 0),
-    ('C0034', 'Shabrina Zwestyningrum', 'nignrumshabrina@gmail.com', '082161918612', 'Jl. Kramat Jaya Baru 3 No. 14, DKI Jakarta', 0),
-    ('C0035', 'Widya Oktavia', 'widyaokto@gmail.com', '082146404817', 'Jl. Jalak Suren Blok C No. 41, Bekasi', 0),
-    ('C0036', 'Nella Rompas', 'nellarommy@gmail.com', '082128249138', 'Jl. Dr. Susilo 1 No.10, Grogol, DKI Jakarta', 0),
-    ('C0037', 'Frisca Candraditya', 'friscaaditya@gmail.com', '082177513714', 'Jl. Mamur Raya Blk. C1 No.1, Bekasi', 0),
-    ('C0038', 'Nita Qosthory', 'qosthoryta@gmail.com', '087896018579', 'Jl. Kramat Asem Raya No. 3, DKI Jakarta', 0),
-    ('C0039', 'Yenny Rafles', 'yenny.rafles@gmail.com', '087870044304', 'Jl. Kramat Soka, Kramat, DKI Jakarta', 0),
-    ('C0040', 'Diandra Prapastia', 'diandraprapastia@gmail.com', '081285257465', 'Jl. Cempaka Putih Barat Raya No. 6A, DKI Jakarta', 0),
-    ('C0041', 'Nadya Putri Kamala', 'nadyaputri31@gmail.com', '085745951236', 'Jl. Dwi Warna 4, No. 9B, DKI Jakarta', 0),
-    ('C0042', 'Melissa Oktaviani', 'melissaokta@gmail.com', '085715452778', 'Jl. Seulawah Raya no. B-3, Kompleks TNI AU Waringin Permai, DKI Jakarta', 0),
-    ('C0043', 'Putri Aini Shihab', 'putrishihab@gmail.com', '081145263548', 'Jl. Kemuning Raya No. 1 RT/RW 012/02 Utan Kayu Utara, DKI Jakarta', 0),
-    ('C0044', 'Seravin Suteja', 'seravinsuteja@gmail.com', '081328184822', 'Jl. Percetakan Negara 1 no. 1 RT 02 RW 07, Johar Baru, DKI Jakarta', 0),
-    ('C0045', 'Abigail Sinaga', 'abigailsinaga@gmail.com', '083854608400', 'Jl. Tekukur No. 24, Rengas, Bintaro, Tangerang Selatan', 0);
+INSERT INTO Member VALUES
+    ('M0001', 'Amanda Sunanto', '1997-10-15', 'amandasusanto@gmail.com', '081228161962', 'Jl. Martapura III No. 4, Tanah Abang, DKI Jakarta', 105),
+    ('M0002', 'Deyuri Melfriza', '1999-08-22', 'deyurimelfriza08@gmail.com', '089681429435', 'Jl. Percetakan Negara D 639, DKI Jakarta', 111),
+    ('M0003', 'Maida Sudiati', '2001-04-05', 'maidasudiati@gmail.com', '082167739725', 'Jl. Suryo Pranoto 2 Bl B/40, DKI Jakarta', 730),
+    ('M0004', 'Tifany Zakia', '1996-12-03', 'zakia03@gmail.com', '085730850479', 'Jl. Gunung Sahari 11 Kecil No. 22, DKI Jakarta', 55),
+    ('M0005', 'Almira Satria', '2003-01-29', 'almirasat@gmail.com', '082108997386', 'Jl. Mangga Besar 13 No 22, DKI Jakarta', 73),
+    ('M0006', 'Melissa Oktaviani', '2000-07-17', 'melissaokta@gmail.com', '085715452778', 'Jl. Seulawah Raya no. B-3, Kompleks TNI AU Waringin Permai, DKI Jakarta', 151),
+    ('M0007', 'Diandra Prapastia', '1998-11-11', 'diandraprapastia@gmail.com', '081285257465', 'Jl. Cempaka Putih Barat Raya No. 6A, DKI Jakarta', 486),
+    ('M0008', 'Nella Rompas', '1995-09-08', 'nellarommy@gmail.com', '082128249138', 'Jl. Dr. Susilo 1 No.10, Grogol, DKI Jakarta', 14),
+    ('M0009', 'Muning Amsamsyum', '2004-03-12', 'muningsyum@gmail.com', '089689525963', 'Jl. Letjen Suprapto, Jakarta Pusat, DKI Jakarta', 557);
+
+INSERT INTO Customer VALUES
+    ('C0001', '082167739725', NULL),
+    ('C0002', '087787145112', NULL),
+    ('C0003', '083137497380', NULL),
+    ('C0004', '087769138879', NULL),
+    ('C0005', '085747023860', NULL),
+    ('C0006', '085782814504', NULL),
+    ('C0007', '085747546770', NULL),
+    ('C0008', '085794709511', NULL),
+    ('C0009', '081203196023', NULL),
+    ('C0010', '081218075334', NULL),
+    ('C0011', '081278109810', NULL),
+    ('C0012', '082136808257', NULL),
+    ('C0013', '082132132499', NULL),
+    ('C0014', '083134766561', NULL),
+    ('C0015', '083109451594', NULL),
+    ('C0016', '082149830047', NULL),
+    ('C0017', '082112160390', NULL),
+    ('C0018', '088719400406', NULL),
+    ('C0019', '088732311162', NULL),
+    ('C0020', '083199652492', NULL),
+    ('C0021', '082184881754', NULL),
+    ('C0022', '081271838985', NULL),
+    ('C0023', '089689525963', NULL),
+    ('C0024', '089696081921', NULL),
+    ('C0025', '089681429435', NULL),
+    ('C0026', '081227019736', NULL),
+    ('C0027', '085730850479', NULL),
+    ('C0028', '085765452642', NULL),
+    ('C0029', '081228161962', NULL),
+    ('C0030', '081246614367', NULL),
+    ('C0031', '087883191543', NULL),
+    ('C0032', '087834096159', NULL),
+    ('C0033', '082108997386', NULL),
+    ('C0034', '082161918612', NULL),
+    ('C0035', '082146404817', NULL),
+    ('C0036', '082128249138', NULL),
+    ('C0037', '082177513714', NULL),
+    ('C0038', '087896018579', NULL),
+    ('C0039', '087870044304', NULL),
+    ('C0040', '081285257465', NULL),
+    ('C0041', '085745951236', NULL),
+    ('C0042', '085715452778', NULL),
+    ('C0043', '081145263548', NULL),
+    ('C0044', '081328184822', NULL),
+    ('C0045', '083854608400', NULL),
+    ('C0046', '081234567890', NULL),
+    ('C0047', '082345678901', NULL),
+    ('C0048', '083456789012', NULL),
+    ('C0049', '084567890123', NULL),
+    ('C0050', '085678901234', NULL),
+    ('C0051', '086789012345', NULL),
+    ('C0052', '087890123456', NULL),
+    ('C0053', '088901234567', NULL),
+    ('C0054', '089012345678', NULL),
+    ('C0055', '081123456789', NULL);
+
+UPDATE Customer SET Member_IDMember = 'M0001' WHERE IDCust = 'C0004';
+UPDATE Customer SET Member_IDMember = 'M0002' WHERE IDCust = 'C0008';
+UPDATE Customer SET Member_IDMember = 'M0003' WHERE IDCust = 'C0013';
+UPDATE Customer SET Member_IDMember = 'M0004' WHERE IDCust = 'C0024';
+UPDATE Customer SET Member_IDMember = 'M0005' WHERE IDCust = 'C0035';
+UPDATE Customer SET Member_IDMember = 'M0006' WHERE IDCust = 'C0037';
+UPDATE Customer SET Member_IDMember = 'M0007' WHERE IDCust = 'C0045';
+UPDATE Customer SET Member_IDMember = 'M0008' WHERE IDCust = 'C0048';
+UPDATE Customer SET Member_IDMember = 'M0009' WHERE IDCust = 'C0052';
 
 INSERT INTO Staff VALUES
     ('S0001', 'Fauzia Saputri', '1997-09-20', 'fauziasaputri@gmail.com', '082109454348', 'Jl. Tekukur No. 24, Rengas, Bintaro, Tangerang Selatan'),
@@ -239,11 +280,63 @@ INSERT INTO Staff VALUES
     ('S0014', 'Septi Marwah', '1996-02-14', 'septimarwah@gmail.com', '081281281504', 'Jl. Cibeber 1 No.17, Rawa Barat, Kebayoran Baru, DKI Jakarta'),
     ('S0015', 'Rofiqotul Ruslian', '2002-07-07', 'ruslianqotul@gmail.com', '081257347202', 'Jl. Bougenville Jakapermai Kranji Bekasi, Bekasi, Jawa Barat');
 
-SELECT * FROM staff;
-
-SELECT * FROM detailtransaksi;
-
-SELECT * FROM transaksi;
+--Insert Transaksi dan DetailTransaksi (Dummy Data)
+INSERT INTO Transaksi VALUES
+    ('T0001', 'C0001', 'S0007', '2023-06-07 11:58:36', 351698.00),
+    ('T0002', 'C0002', 'S0007', '2023-06-07 12:43:21', 275000.00),
+    ('T0003', 'C0003', 'S0007', '2023-06-07 13:18:57', 150000.00),
+    ('T0004', 'C0004', 'S0007', '2023-06-07 15:07:49', 605000.00),
+    ('T0005', 'C0005', 'S0007', '2023-06-07 20:35:42', 230000.00),
+    ('T0006', 'C0006', 'S0007', '2023-06-07 20:50:31', 477106.00),
+    ('T0007', 'C0007', 'S0007', '2023-06-07 21:24:59', 249500.00),
+    ('T0008', 'C0008', 'S0012', '2023-06-08 10:24:53', 506000.00),
+    ('T0009', 'C0009', 'S0012', '2023-06-08 11:56:28', 204600.00),
+    ('T0010', 'C0010', 'S0013', '2023-06-08 16:39:59', 465590.00),
+    ('T0011', 'C0011', 'S0013', '2023-06-08 17:48:36', 145000.00),
+    ('T0012', 'C0012', 'S0013', '2023-06-08 19:15:07', 281085.00),
+    ('T0013', 'C0013', 'S0008', '2023-06-08 21:10:19', 1026859.00),
+    ('T0014', 'C0014', 'S0008', '2023-06-09 10:32:55', 277788.00),
+    ('T0015', 'C0015', 'S0008', '2023-06-09 13:21:43', 170000.00),
+    ('T0016', 'C0016', 'S0008', '2023-06-09 15:47:02', 86000.00),
+    ('T0017', 'C0017', 'S0008', '2023-06-09 18:34:19', 277950.00),
+    ('T0018', 'C0018', 'S0002', '2023-06-10 10:13:08', 203500.00),
+    ('T0019', 'C0019', 'S0002', '2023-06-10 11:25:59', 295000.00),
+    ('T0020', 'C0020', 'S0002', '2023-06-10 15:46:51', 220000.00),
+    ('T0021', 'C0021', 'S0005', '2023-06-10 16:53:42', 260328.00),
+    ('T0022', 'C0022', 'S0006', '2023-06-10 19:45:18', 104000.00),
+    ('T0023', 'C0023', 'S0001', '2023-06-10 20:58:46', 137000.00),
+    ('T0024', 'C0024', 'S0001', '2023-06-11 10:11:34', 555892.00),
+    ('T0025', 'C0025', 'S0001', '2023-06-11 12:45:21', 220000.00),
+    ('T0026', 'C0026', 'S0001', '2023-06-11 13:55:17', 54400.00),
+    ('T0027', 'C0027', 'S0015', '2023-06-11 15:27:39', 305800.00),
+    ('T0028', 'C0028', 'S0015', '2023-06-11 18:23:52', 233100.00),
+    ('T0029', 'C0029', 'S0015', '2023-06-11 21:04:09', 184875.00),
+    ('T0030', 'C0030', 'S0015', '2023-06-12 10:45:57', 495000.00),
+    ('T0031', 'C0031', 'S0015', '2023-06-12 11:54:18', 198000.00),
+    ('T0032', 'C0032', 'S0015', '2023-06-12 14:36:43', 362000.00),
+    ('T0033', 'C0033', 'S0014', '2023-06-12 17:08:32', 113606.00),
+    ('T0034', 'C0034', 'S0014', '2023-06-12 19:59:05', 84000.00),
+    ('T0035', 'C0035', 'S0014', '2023-06-12 21:18:59', 573729.00),
+    ('T0036', 'C0036', 'S0014', '2023-06-13 10:22:40', 179000.00),
+    ('T0037', 'C0037', 'S0014', '2023-06-13 11:35:29', 651732.00),
+    ('T0038', 'C0038', 'S0014', '2023-06-13 14:17:45', 405500.00),
+    ('T0039', 'C0039', 'S0004', '2023-06-13 15:58:53', 248894.00),
+    ('T0040', 'C0040', 'S0004', '2023-06-13 17:26:18', 145000.00),
+    ('T0041', 'C0041', 'S0004', '2023-06-13 19:50:59', 154000.00),
+    ('T0042', 'C0042', 'S0004', '2023-06-13 20:57:42', 379500.00),
+    ('T0043', 'C0043', 'S0004', '2023-06-14 10:44:17', 110000.00),
+    ('T0044', 'C0044', 'S0004', '2023-06-14 11:57:35', 331500.00),
+    ('T0045', 'C0045', 'S0004', '2023-06-14 14:36:47', 986250.00),
+    ('T0046', 'C0046', 'S0011', '2023-06-14 16:43:51', 39000.00),
+    ('T0047', 'C0047', 'S0011', '2023-06-14 18:15:09', 230000.00),
+    ('T0048', 'C0048', 'S0002', '2023-06-14 21:05:23', 165000.00),
+    ('T0049', 'C0049', 'S0002', '2023-06-15 10:16:48', 514500.00),
+    ('T0050', 'C0050', 'S0002', '2023-06-15 12:39:27', 311000.00),
+    ('T0051', 'C0051', 'S0002', '2023-06-15 13:45:19', 130000.00),
+    ('T0052', 'C0052', 'S0002', '2023-06-15 15:15:37', 1057000.00),
+    ('T0053', 'C0053', 'S0002', '2023-06-15 17:57:58', 393500.00),
+    ('T0054', 'C0054', 'S0008', '2023-06-15 19:10:24', 49500.00),
+    ('T0055', 'C0055', 'S0008', '2023-06-15 21:52:42', 117000.00);
 
 INSERT INTO DetailTransaksi VALUES
     ('D0001', 'T0001', 'P0001', 1, 89000.00),
@@ -335,52 +428,34 @@ INSERT INTO DetailTransaksi VALUES
     ('D0087', 'T0045', 'P0022', 1, 93750.00),
     ('D0088', 'T0045', 'P0070', 1, 166000.00),
     ('D0089', 'T0045', 'P0004', 1, 119000.00),
-    ('D0090', 'T0045', 'P0014', 1, 52500.00);
+    ('D0090', 'T0045', 'P0014', 1, 52500.00),
+    ('D0091', 'T0046', 'P0011', 1, 39000.00),
+    ('D0092', 'T0047', 'P0039', 1, 230000.00),
+    ('D0093', 'T0048', 'P0026', 2, 165000.00),
+    ('D0094', 'T0049', 'P0069', 1, 158000.00),
+    ('D0095', 'T0049', 'P0013', 3, 135000.00),
+    ('D0096', 'T0049', 'P0003', 2, 98000.00),
+    ('D0097', 'T0049', 'P0016', 1, 84000.00),
+    ('D0098', 'T0049', 'P0033', 1, 39500.00),
+    ('D0099', 'T0050', 'P0044', 1, 145000.00),
+    ('D0100', 'T0050', 'P0070', 1, 166000.00),
+    ('D0101', 'T0051', 'P0010', 2, 130000.00),
+    ('D0102', 'T0052', 'P0072', 3, 387000.00),
+    ('D0103', 'T0052', 'P0061', 1, 220000.00),
+    ('D0104', 'T0052', 'P0026', 2, 165000.00),
+    ('D0105', 'T0052', 'P0038', 1, 138000.00),
+    ('D0106', 'T0052', 'P0003', 3, 147000.00),
+    ('D0107', 'T0053', 'P0072', 2, 258000.00),
+    ('D0108', 'T0053', 'P0014', 1, 52500.00),
+    ('D0109', 'T0053', 'P0018', 2, 83000.00),
+    ('D0110', 'T0054', 'P0032', 1, 49500.00),
+    ('D0111', 'T0055', 'P0040', 1, 117000.00);
 
-
-INSERT INTO Transaksi VALUES
-    ('T0001', 'C0034', 'S0007', '2023-03-22', 351698.00),
-    ('T0002', 'C0012', 'S0007', '2023-02-07', 275000.00),
-    ('T0003', 'C0020', 'S0007', '2023-06-13', 150000.00),
-    ('T0004', 'C0008', 'S0007', '2023-01-19', 605000.00),
-    ('T0005', 'C0042', 'S0007', '2023-04-28', 230000.00),
-    ('T0006', 'C0029', 'S0007', '2023-05-09', 477106.00),
-    ('T0007', 'C0016', 'S0007', '2023-04-02', 249500.00),
-    ('T0008', 'C0005', 'S0012', '2023-03-11', 506000.00),
-    ('T0009', 'C0025', 'S0012', '2023-02-05', 204600.00),
-    ('T0010', 'C0037', 'S0013', '2023-03-01', 465590.00),
-    ('T0011', 'C0041', 'S0013', '2023-02-17', 145000.00),
-    ('T0012', 'C0019', 'S0013', '2023-05-24', 281085.00),
-    ('T0013', 'C0032', 'S0008', '2023-01-06', 1026859.00),
-    ('T0014', 'C0011', 'S0008', '2023-03-18', 277788.00),
-    ('T0015', 'C0002', 'S0008', '2023-06-04', 170000.00),
-    ('T0016', 'C0038', 'S0008', '2023-04-15', 86000.00),
-    ('T0017', 'C0004', 'S0008', '2023-05-08', 277950.00),
-    ('T0018', 'C0022', 'S0002', '2023-01-31', 203500.00),
-    ('T0019', 'C0007', 'S0002', '2023-01-26', 295000.00),
-    ('T0020', 'C0031', 'S0002', '2023-02-03', 220000.00),
-    ('T0021', 'C0009', 'S0005', '2023-03-10', 260328.00),
-    ('T0022', 'C0018', 'S0006', '2023-05-21', 104000.00),
-    ('T0023', 'C0026', 'S0001', '2023-02-12', 137000.00),
-    ('T0024', 'C0015', 'S0001', '2023-04-25', 555892.00),
-    ('T0025', 'C0028', 'S0001', '2023-01-20', 220000.00),
-    ('T0026', 'C0003', 'S0001', '2023-05-02', 54400.00),
-    ('T0027', 'C0024', 'S0015', '2023-03-16', 305800.00),
-    ('T0028', 'C0036', 'S0015', '2023-05-13', 233100.00),
-    ('T0029', 'C0030', 'S0015', '2023-01-27', 184875.00),
-    ('T0030', 'C0006', 'S0015', '2023-02-14', 495000.00),
-    ('T0031', 'C0014', 'S0015', '2023-04-23', 198000.00),
-    ('T0032', 'C0001', 'S0015', '2023-03-28', 362000.00),
-    ('T0033', 'C0035', 'S0014', '2023-06-09', 113606.00),
-    ('T0034', 'C0010', 'S0014', '2023-05-22', 84000.00),
-    ('T0035', 'C0023', 'S0014', '2023-02-04', 573729.00),
-    ('T0036', 'C0013', 'S0014', '2023-04-07', 179000.00),
-    ('T0037', 'C0040', 'S0014', '2023-03-19', 651732.00),
-    ('T0038', 'C0021', 'S0014', '2023-05-05', 405500.00),
-    ('T0039', 'C0043', 'S0004', '2023-01-25', 248894.00),
-    ('T0040', 'C0027', 'S0004', '2023-05-11', 145000.00),
-    ('T0041', 'C0017', 'S0004', '2023-02-16', 154000.00),
-    ('T0042', 'C0033', 'S0004', '2023-06-18', 379500.00),
-    ('T0043', 'C0039', 'S0004', '2023-04-01', 110000.00),
-    ('T0044', 'C0045', 'S0004', '2023-01-30', 331500.00),
-    ('T0045', 'C0044', 'S0004', '2023-03-08', 986250.00);
+--Display Tabel
+SELECT * FROM Brand;
+SELECT * FROM Produk;
+SELECT * FROM Member;
+SELECT * FROM Customer ORDER BY IDCust ASC;
+SELECT * FROM Staff;
+SELECT * FROM Transaksi ORDER BY IDTransaksi ASC;
+SELECT * FROM DetailTransaksi ORDER BY IDDetailTransaksi ASC;
