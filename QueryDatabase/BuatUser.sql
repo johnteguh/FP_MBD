@@ -1,5 +1,24 @@
+-- Hak Akses Users
+CREATE USER tokomember WITH ENCRYPTED PASSWORD 'member123';
+CREATE USER tokoadmin WITH ENCRYPTED PASSWORD 'admin123';
+CREATE USER tokostaff WITH ENCRYPTED PASSWORD 'staff123';
 
---Membuat User Member yang hanya bisa SELECT table Member
-CREATE USER Member_toko WITH ENCRYPTED PASSWORD 'password';
-GRANT CONNECT ON DATABASE TokoKosmetik TO Member_toko;
-GRANT SELECT ON MEMBER TO Member_toko;
+
+-- Role
+CREATE ROLE admin_role;
+CREATE ROLE member_role;
+CREATE ROLE staff_role;
+
+-- Admin
+GRANT admin_role TO tokoadmin;
+GRANT SELECT, INSERT, UPDATE ON Customer, Transaksi, DetailTransaksi, Produk, Brand, Member TO admin_role;
+
+
+-- Staff
+GRANT staff_role TO tokostaff;
+GRANT SELECT, INSERT, UPDATE ON Customer, Transaksi, DetailTransaksi TO staff_role;
+GRANT SELECT ON MEMBER TO staff_role;
+
+-- Member
+GRANT member_role TO tokomember;
+GRANT SELECT ON MEMBER TO member_role;
